@@ -12,6 +12,7 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ITEM_FAVORITED = "ITEM_FAVORITED";
 export const ITEM_UNFAVORITED = "ITEM_UNFAVORITED";
+export const ITEM_SEARCH = "ITEM_SEARCH";
 export const SET_PAGE = "SET_PAGE";
 export const APPLY_TAG_FILTER = "APPLY_TAG_FILTER";
 export const CHANGE_TAB = "CHANGE_TAB";
