@@ -70,7 +70,7 @@ router.get("/", auth.optional, function(req, res, next) {
       } else if (req.query.favorited) {
         query._id = { $in: [] };
       }
-
+      
       return Promise.all([
         Item.find(query)
           .limit(Number(limit))
@@ -83,13 +83,16 @@ router.get("/", auth.optional, function(req, res, next) {
         var items = results[0];
         var itemsCount = results[1];
         var user = results[2];
+        const sellers = items.map(item => item.seller);
+        const sellerUsers = await User.find({ _id: { $in: sellers } });
+        const sellersMap = sellerUsers.reduce(
+          (acc, sellerUser) => ({...acc, [sellerUser._id]: sellerUser}),
+          {});
         return res.json({
-          items: await Promise.all(
-            items.map(async function(item) {
-              item.seller = await User.findById(item.seller);
-              return item.toJSONFor(user);
-            })
-          ),
+          items: items.map(item => {
+            item.seller  = sellersMap[item.seller];
+            return item.toJSONFor(user);
+          }),
           itemsCount: itemsCount
         });
       });
